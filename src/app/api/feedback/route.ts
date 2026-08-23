@@ -1,6 +1,29 @@
 import { NextResponse } from 'next/server';
 import connectDB from '@/lib/mongodb';
 import { Issue } from '@/models/Issue';
+import { User } from '@/models/User';
+
+async function awardPoints(userId: string, points: number) {
+  if (!userId) return;
+  const user = await User.findOne({ id: userId });
+  if (user) {
+    user.reputationPoints += points;
+    if (user.reputationPoints >= 1000 && !user.badges.includes('Civic Hero')) user.badges.push('Civic Hero');
+    else if (user.reputationPoints >= 500 && !user.badges.includes('Active Citizen')) user.badges.push('Active Citizen');
+    else if (user.reputationPoints >= 100 && !user.badges.includes('Reporter')) user.badges.push('Reporter');
+    await user.save();
+  } else {
+    let initialBadge = 'Citizen';
+    if (points >= 100) initialBadge = 'Reporter';
+    await User.create({
+      id: userId,
+      username: 'Citizen ' + userId.substring(userId.length - 4),
+      role: 'citizen',
+      reputationPoints: points,
+      badges: [initialBadge]
+    });
+  }
+}
 
 export async function GET() {
   try {
@@ -28,6 +51,8 @@ export async function POST(request: Request) {
       fakeReason = 'AI detected inconsistency in the image vs description.';
     }
 
+    const { userId, ...issueData } = data;
+
     const newIssue = await Issue.create({
       id: Math.random().toString(36).substring(2, 9),
       createdAt: new Date().toISOString(),
@@ -36,8 +61,13 @@ export async function POST(request: Request) {
       isFake,
       fakeReason,
       status: isFake ? 'Closed' : 'Open', // Auto-close fake reports
-      ...data
+      userId,
+      ...issueData
     });
+
+    if (userId && !isFake) {
+      await awardPoints(userId, 50); // 50 points for reporting a real issue
+    }
 
     return NextResponse.json({ success: true, data: newIssue });
   } catch (error) {
@@ -67,6 +97,7 @@ export async function PUT(request: Request) {
       issue.upvotes += 1;
       issue.votedBy.push(mockUserId);
       await issue.save();
+      await awardPoints(mockUserId, 5); // 5 points for upvoting
     } else if (action === 'community_vote') {
       if (!issue.communityVotes) issue.communityVotes = [];
       issue.communityVotes.push({
@@ -77,6 +108,7 @@ export async function PUT(request: Request) {
         timestamp: new Date().toISOString()
       });
       await issue.save();
+      await awardPoints(mockUserId, 20); // 20 points for verifying
     } else if (action === 'update_status') {
       issue.status = status;
       if (status === 'Resolved') {
@@ -101,6 +133,7 @@ export async function PUT(request: Request) {
         timestamp: new Date().toISOString()
       });
       await issue.save();
+      await awardPoints(mockUserId, 30); // 30 points for confirming resolution
     }
 
     return NextResponse.json({ success: true, data: issue });

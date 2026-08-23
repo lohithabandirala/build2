@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Navigation from '@/components/Navigation';
 import VoiceRecorder from '@/components/VoiceRecorder';
 import { LuImage, LuSend, LuMapPin, LuCircleCheck } from 'react-icons/lu';
@@ -15,6 +15,16 @@ export default function ReportPage() {
   const [locationLoading, setLocationLoading] = useState(false);
   const [imagePreview, setImagePreview] = useState<string | null>(null);
   const [base64Image, setBase64Image] = useState<string | null>(null);
+  const [userId, setUserId] = useState('');
+
+  useEffect(() => {
+    let storedId = localStorage.getItem('awaaz_citizen_id');
+    if (!storedId) {
+      storedId = "citizen_" + Math.random().toString(36).substring(2, 9);
+      localStorage.setItem('awaaz_citizen_id', storedId);
+    }
+    setUserId(storedId);
+  }, []);
 
   const handleTranscription = (transcript: string) => {
     setText((prev) => prev ? prev + ' ' + transcript : transcript);
@@ -73,11 +83,12 @@ export default function ReportPage() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           text,
-          category, // User selected category (can be compared with AI category)
+          category,
           location,
-          imageUrl: imagePreview, // Save the data URL to the DB for the feed
+          imageUrl: imagePreview,
           ai_analysis,
-          status: 'Open'
+          status: 'Open',
+          userId
         })
       });
 
