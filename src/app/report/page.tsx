@@ -41,11 +41,10 @@ export default function ReportPage() {
           setLocation({ lat, lng });
           
           try {
-             // Reverse geocode to get a readable location name
+             // Reverse geocode to get a readable full address
              const res = await fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lng}`);
              const data = await res.json();
-             let locName = data.address?.city || data.address?.town || data.address?.village || data.address?.county || data.address?.suburb || "Unknown Area";
-             if (data.address?.state) locName += `, ${data.address.state}`;
+             const locName = data.display_name || "Unknown Area";
              setLocationName(locName);
           } catch (e) {
              console.error("Geocoding failed", e);
