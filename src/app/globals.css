@@ -1,7 +1,7 @@
 :root {
   --background: #F9FAFB;
-  --foreground: #111827;
-  --foreground-muted: #6B7280;
+  --foreground: #000000;
+  --foreground-muted: #374151;
   --primary: #4F46E5;
   --primary-glow: rgba(79, 70, 229, 0.2);
   --secondary: #10B981;
