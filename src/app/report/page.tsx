@@ -27,6 +27,24 @@ export default function ReportPage() {
     setUserId(storedId);
   }, []);
 
+  // Auto-select category based on keywords in text
+  useEffect(() => {
+    if (!text) return;
+    const lowerText = text.toLowerCase();
+    
+    if (lowerText.match(/(road|pothole|street|traffic|highway|asphalt)/)) {
+      setCategory('roads');
+    } else if (lowerText.match(/(water|pipe|drain|sewage|leak|flood|borewell)/)) {
+      setCategory('water');
+    } else if (lowerText.match(/(power|electricity|wire|light|transformer|blackout|outage)/)) {
+      setCategory('electricity');
+    } else if (lowerText.match(/(hospital|clinic|health|garbage|trash|waste|mosquito)/)) {
+      setCategory('health');
+    } else if (lowerText.match(/(school|teacher|class|college|education)/)) {
+      setCategory('education');
+    }
+  }, [text]);
+
   const handleTranscription = (transcript: string) => {
     setText((prev) => prev ? prev + ' ' + transcript : transcript);
   };
