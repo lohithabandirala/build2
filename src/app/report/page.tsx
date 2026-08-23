@@ -12,6 +12,7 @@ export default function ReportPage() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
   const [location, setLocation] = useState<{lat: number, lng: number} | null>(null);
+  const [locationName, setLocationName] = useState<string | null>(null);
   const [locationLoading, setLocationLoading] = useState(false);
   const [imagePreview, setImagePreview] = useState<string | null>(null);
   const [base64Image, setBase64Image] = useState<string | null>(null);
@@ -34,8 +35,22 @@ export default function ReportPage() {
     if ("geolocation" in navigator) {
       setLocationLoading(true);
       navigator.geolocation.getCurrentPosition(
-        (position) => {
-          setLocation({ lat: position.coords.latitude, lng: position.coords.longitude });
+        async (position) => {
+          const lat = position.coords.latitude;
+          const lng = position.coords.longitude;
+          setLocation({ lat, lng });
+          
+          try {
+             // Reverse geocode to get a readable location name
+             const res = await fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lng}`);
+             const data = await res.json();
+             let locName = data.address?.city || data.address?.town || data.address?.village || data.address?.county || data.address?.suburb || "Unknown Area";
+             if (data.address?.state) locName += `, ${data.address.state}`;
+             setLocationName(locName);
+          } catch (e) {
+             console.error("Geocoding failed", e);
+          }
+
           setLocationLoading(false);
         },
         (error) => {
@@ -85,6 +100,7 @@ export default function ReportPage() {
           text,
           category,
           location,
+          locationName,
           imageUrl: imagePreview,
           ai_analysis,
           status: 'Open',
@@ -205,7 +221,7 @@ export default function ReportPage() {
                   className="glass-button" 
                   style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.5rem', height: '48px', width: '100%', borderColor: location ? 'var(--primary)' : undefined }}
                 >
-                  <LuMapPin /> {locationLoading ? 'Detecting...' : location ? 'Location Detected' : 'Auto-detect Location'}
+                  <LuMapPin /> {locationLoading ? 'Detecting...' : locationName ? locationName : location ? 'Location Detected' : 'Auto-detect Location'}
                 </button>
               </div>
             </div>

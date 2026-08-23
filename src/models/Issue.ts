@@ -37,6 +37,7 @@ const IssueSchema: Schema = new Schema({
     lat: { type: Number },
     lng: { type: Number }
   },
+  locationName: { type: String },
   status: { type: String, default: 'Open' },
   ai_analysis: { type: Schema.Types.Mixed },
   upvotes: { type: Number, default: 0 },
