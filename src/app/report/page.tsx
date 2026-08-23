@@ -147,7 +147,7 @@ export default function ReportPage() {
           >
             <LuCircleCheck size={64} color="var(--primary)" />
             <h2 style={{ fontSize: '2rem', fontWeight: 600 }}>Thank You!</h2>
-            <p style={{ color: 'rgba(255,255,255,0.7)', fontSize: '1.125rem' }}>
+            <p style={{ color: 'var(--foreground-muted)', fontSize: '1.125rem' }}>
               आपका संदेश प्राप्त हुआ है – your input has been recorded and is being analyzed by our AI to inform future policies.
             </p>
             <button onClick={() => { setSubmitted(false); setText(''); }} className="glass-button hover-scale" style={{ marginTop: '2rem' }}>
@@ -166,7 +166,7 @@ export default function ReportPage() {
       <main style={{ padding: '2rem 0', maxWidth: '800px', margin: '0 auto', display: 'flex', flexDirection: 'column', gap: '2rem' }}>
         <div>
           <h1 style={{ fontSize: '2.5rem', fontWeight: 700, marginBottom: '0.5rem' }}>Report an Issue</h1>
-          <p style={{ color: 'rgba(255,255,255,0.6)', fontSize: '1.125rem' }}>
+          <p style={{ color: 'var(--foreground-muted)', fontSize: '1.125rem' }}>
             Help us improve our infrastructure. Provide details via voice, text, or photos.
           </p>
         </div>
@@ -175,7 +175,7 @@ export default function ReportPage() {
 
         <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
           <div style={{ height: '1px', flex: 1, background: 'var(--glass-border)' }} />
-          <span style={{ color: 'rgba(255,255,255,0.4)', fontSize: '0.875rem' }}>OR TYPE IT OUT</span>
+          <span style={{ color: 'var(--foreground-muted)', fontSize: '0.875rem' }}>OR TYPE IT OUT</span>
           <div style={{ height: '1px', flex: 1, background: 'var(--glass-border)' }} />
         </div>
 
@@ -183,18 +183,18 @@ export default function ReportPage() {
           <div className="glass-panel" style={{ padding: '2rem', display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
             
             <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
-              <label style={{ fontSize: '0.875rem', fontWeight: 500, color: 'rgba(255,255,255,0.8)' }}>Describe the issue</label>
+              <label style={{ fontSize: '0.875rem', fontWeight: 500, color: 'var(--foreground-muted)' }}>Describe the issue</label>
               <textarea 
                 value={text}
                 onChange={(e) => setText(e.target.value)}
                 placeholder="E.g., The main road in Sector 15 has multiple large potholes..."
                 style={{ 
                   width: '100%', minHeight: '120px', 
-                  background: 'rgba(0,0,0,0.3)', 
+                  background: 'var(--glass-border)', 
                   border: '1px solid var(--glass-border)', 
                   borderRadius: '12px', 
                   padding: '1rem',
-                  color: '#fff',
+                  color: 'var(--foreground)',
                   fontFamily: 'inherit',
                   resize: 'vertical'
                 }}
@@ -204,17 +204,17 @@ export default function ReportPage() {
 
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1.5rem' }}>
               <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
-                <label style={{ fontSize: '0.875rem', fontWeight: 500, color: 'rgba(255,255,255,0.8)' }}>Category</label>
+                <label style={{ fontSize: '0.875rem', fontWeight: 500, color: 'var(--foreground-muted)' }}>Category</label>
                 <select 
                   value={category}
                   onChange={(e) => setCategory(e.target.value)}
                   style={{ 
                     width: '100%', height: '48px',
-                    background: 'rgba(0,0,0,0.3)', 
+                    background: 'var(--glass-border)', 
                     border: '1px solid var(--glass-border)', 
                     borderRadius: '12px', 
                     padding: '0 1rem',
-                    color: '#fff',
+                    color: 'var(--foreground)',
                     fontFamily: 'inherit',
                   }}
                   required
@@ -230,7 +230,7 @@ export default function ReportPage() {
               </div>
 
               <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
-                <label style={{ fontSize: '0.875rem', fontWeight: 500, color: 'rgba(255,255,255,0.8)' }}>Location</label>
+                <label style={{ fontSize: '0.875rem', fontWeight: 500, color: 'var(--foreground-muted)' }}>Location</label>
                 <button 
                   type="button" 
                   onClick={handleGetLocation}
@@ -244,13 +244,13 @@ export default function ReportPage() {
             </div>
 
             <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
-               <label style={{ fontSize: '0.875rem', fontWeight: 500, color: 'rgba(255,255,255,0.8)' }}>Upload Photos (Optional)</label>
+               <label style={{ fontSize: '0.875rem', fontWeight: 500, color: 'var(--foreground-muted)' }}>Upload Photos (Optional)</label>
                <label style={{ 
                   width: '100%', height: imagePreview ? 'auto' : '100px', minHeight: '100px',
                   border: '2px dashed var(--glass-border)', 
                   borderRadius: '12px', 
                   display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center',
-                  color: 'rgba(255,255,255,0.5)',
+                  color: 'var(--foreground-muted)',
                   cursor: 'pointer',
                   overflow: 'hidden'
                 }}>

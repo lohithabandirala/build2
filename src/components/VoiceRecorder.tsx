@@ -68,7 +68,7 @@ export default function VoiceRecorder({ onTranscription }: VoiceRecorderProps) {
   return (
     <div className="glass-panel" style={{ padding: '2rem', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '1.5rem', width: '100%' }}>
       <h3 style={{ fontSize: '1.25rem', fontWeight: 600 }}>Record your issue</h3>
-      <p style={{ color: 'rgba(255,255,255,0.6)', textAlign: 'center' }}>
+      <p style={{ color: 'var(--foreground-muted)', textAlign: 'center' }}>
         Speak in Hindi, English, or your local language. We will automatically transcribe and process it.
       </p>
 
@@ -95,7 +95,7 @@ export default function VoiceRecorder({ onTranscription }: VoiceRecorderProps) {
             width: '80px', height: '80px',
             borderRadius: '50%',
             background: isRecording ? 'var(--accent)' : 'linear-gradient(135deg, var(--primary), var(--secondary))',
-            color: '#fff',
+            color: 'var(--foreground)',
             display: 'flex', alignItems: 'center', justifyContent: 'center',
             zIndex: 1,
             boxShadow: isRecording ? '0 0 20px rgba(244, 63, 94, 0.5)' : '0 4px 14px var(--primary-glow)',
@@ -115,7 +115,7 @@ export default function VoiceRecorder({ onTranscription }: VoiceRecorderProps) {
 
       <div style={{
         width: '100%', minHeight: '80px',
-        background: 'rgba(0,0,0,0.3)',
+        background: 'var(--glass-border)',
         borderRadius: '12px',
         padding: '1rem',
         border: '1px solid var(--glass-border)',
@@ -123,7 +123,7 @@ export default function VoiceRecorder({ onTranscription }: VoiceRecorderProps) {
         alignItems: 'center',
         justifyContent: 'center',
         fontStyle: transcript ? 'normal' : 'italic',
-        color: transcript ? '#fff' : 'rgba(255,255,255,0.4)'
+        color: transcript ? '#fff' : 'var(--foreground-muted)'
       }}>
         {isProcessing ? 'Processing audio...' : (transcript || 'Transcription will appear here...')}
       </div>

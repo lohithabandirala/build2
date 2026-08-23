@@ -39,14 +39,14 @@ export default function Leaderboard() {
             <LuTrophy size={40} color="#000" />
           </div>
           <h1 style={{ fontSize: '2.5rem', fontWeight: 700, marginBottom: '0.5rem' }}>Civic Leaderboard</h1>
-          <p style={{ color: 'rgba(255,255,255,0.6)', fontSize: '1.125rem', maxWidth: '500px', margin: '0 auto' }}>
+          <p style={{ color: 'var(--foreground-muted)', fontSize: '1.125rem', maxWidth: '500px', margin: '0 auto' }}>
             Earn points by reporting verified issues and upvoting hazards in your community.
           </p>
         </div>
 
         <div className="glass-panel" style={{ padding: '2rem', display: 'flex', flexDirection: 'column', gap: '1rem' }}>
           
-          <div style={{ display: 'grid', gridTemplateColumns: '50px 2fr 1fr 1fr', padding: '1rem', borderBottom: '1px solid var(--glass-border)', color: 'rgba(255,255,255,0.5)', fontWeight: 600, fontSize: '0.875rem', textTransform: 'uppercase' }}>
+          <div style={{ display: 'grid', gridTemplateColumns: '50px 2fr 1fr 1fr', padding: '1rem', borderBottom: '1px solid var(--glass-border)', color: 'var(--foreground-muted)', fontWeight: 600, fontSize: '0.875rem', textTransform: 'uppercase' }}>
             <div>Rank</div>
             <div>Citizen</div>
             <div>Badge</div>
@@ -54,12 +54,12 @@ export default function Leaderboard() {
           </div>
 
           {loading ? (
-            <div style={{ padding: '2rem', textAlign: 'center', color: 'rgba(255,255,255,0.5)' }}>
+            <div style={{ padding: '2rem', textAlign: 'center', color: 'var(--foreground-muted)' }}>
               <LuLoader className="spin" size={24} style={{ marginBottom: '1rem' }} />
               <p>Loading ranking data...</p>
             </div>
           ) : leaderboardData.length === 0 ? (
-            <div style={{ padding: '2rem', textAlign: 'center', color: 'rgba(255,255,255,0.5)' }}>
+            <div style={{ padding: '2rem', textAlign: 'center', color: 'var(--foreground-muted)' }}>
               No citizens found on the leaderboard yet.
             </div>
           ) : (
@@ -76,15 +76,15 @@ export default function Leaderboard() {
                   {index === 0 ? <LuTrophy color="#fbbf24" size={24} /> : 
                    index === 1 ? <LuMedal color="#94a3b8" size={24} /> : 
                    index === 2 ? <LuMedal color="#b45309" size={24} /> : 
-                   <span style={{ fontSize: '1.25rem', fontWeight: 600, color: 'rgba(255,255,255,0.4)', paddingLeft: '8px' }}>{index + 1}</span>}
+                   <span style={{ fontSize: '1.25rem', fontWeight: 600, color: 'var(--foreground-muted)', paddingLeft: '8px' }}>{index + 1}</span>}
                 </div>
                 <div style={{ display: 'flex', flexDirection: 'column' }}>
                   <span style={{ fontWeight: 600, fontSize: '1.125rem' }}>{user.username}</span>
-                  <span style={{ color: 'rgba(255,255,255,0.5)', fontSize: '0.875rem' }}>Level {Math.floor(user.reputationPoints / 100) + 1}</span>
+                  <span style={{ color: 'var(--foreground-muted)', fontSize: '0.875rem' }}>Level {Math.floor(user.reputationPoints / 100) + 1}</span>
                 </div>
                 <div>
                   <span style={{ 
-                    background: 'rgba(255,255,255,0.1)', padding: '0.25rem 0.75rem', 
+                    background: 'var(--glass-border)', padding: '0.25rem 0.75rem', 
                     borderRadius: '999px', fontSize: '0.75rem', fontWeight: 500,
                     color: index === 0 ? '#fbbf24' : 'var(--primary)'
                   }}>

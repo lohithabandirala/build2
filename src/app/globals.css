@@ -1,14 +1,15 @@
 :root {
-  --background: #09090b; /* Sleek dark mode background */
-  --foreground: #fafafa; /* Light text */
-  --primary: #4ade80; /* Vibrant neon green */
-  --primary-glow: rgba(74, 222, 128, 0.4);
-  --secondary: #3b82f6; /* Electric blue */
-  --secondary-glow: rgba(59, 130, 246, 0.4);
-  --accent: #f43f5e; /* Neon pink/red */
-  --glass: rgba(255, 255, 255, 0.04);
-  --glass-border: rgba(255, 255, 255, 0.08);
-  --panel-bg: rgba(24, 24, 27, 0.6);
+  --background: #f8fafc;
+  --foreground: #0f172a;
+  --foreground-muted: #64748b;
+  --primary: #2563eb;
+  --primary-glow: rgba(37, 99, 235, 0.2);
+  --secondary: #059669;
+  --secondary-glow: rgba(5, 150, 105, 0.2);
+  --accent: #e11d48;
+  --glass: #ffffff;
+  --glass-border: #e2e8f0;
+  --panel-bg: #ffffff;
 }
 
 html,
@@ -39,45 +40,45 @@ button {
   background: none;
 }
 
-/* Glassmorphism Classes */
+/* Glassmorphism Classes replaced with Solid Panel */
 .glass-panel {
   background: var(--glass);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
   border: 1px solid var(--glass-border);
-  border-radius: 16px;
+  border-radius: 12px;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -2px rgba(0, 0, 0, 0.05);
 }
 
 .glass-button {
-  background: rgba(255, 255, 255, 0.08);
-  border: 1px solid rgba(255, 255, 255, 0.15);
-  backdrop-filter: blur(12px);
+  background: #ffffff;
+  border: 1px solid #cbd5e1;
   color: var(--foreground);
-  border-radius: 9999px;
+  border-radius: 8px;
   padding: 0.75rem 1.5rem;
   font-weight: 500;
   transition: all 0.2s ease-in-out;
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
 }
 
 .glass-button:hover {
-  background: rgba(255, 255, 255, 0.12);
-  border-color: rgba(255, 255, 255, 0.3);
+  background: #f1f5f9;
+  border-color: #94a3b8;
   transform: translateY(-1px);
 }
 
 .primary-button {
-  background: linear-gradient(135deg, #22c55e, #10b981);
-  color: #000;
+  background: var(--primary);
+  color: #ffffff;
   border: none;
-  border-radius: 9999px;
+  border-radius: 8px;
   padding: 0.75rem 1.5rem;
   font-weight: 600;
-  box-shadow: 0 4px 14px var(--primary-glow);
+  box-shadow: 0 4px 6px -1px var(--primary-glow);
   transition: all 0.2s ease-in-out;
 }
 
 .primary-button:hover {
-  box-shadow: 0 6px 20px var(--primary-glow);
+  background: #1d4ed8;
+  box-shadow: 0 6px 8px -1px var(--primary-glow);
   transform: translateY(-2px);
 }
 

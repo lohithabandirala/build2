@@ -30,7 +30,7 @@ export default function MapComponent({ feedbackData }: { feedbackData: any[] }) 
         />
         
         {feedbackData.length === 0 && (
-          <div style={{ position: 'absolute', top: '10px', right: '10px', zIndex: 1000, background: 'rgba(0,0,0,0.8)', padding: '0.5rem 1rem', borderRadius: '4px', color: 'white' }}>
+          <div style={{ position: 'absolute', top: '10px', right: '10px', zIndex: 1000, background: 'var(--glass)', padding: '0.5rem 1rem', borderRadius: '4px', color: 'var(--foreground)' }}>
             No infrastructure issues reported yet.
           </div>
         )}

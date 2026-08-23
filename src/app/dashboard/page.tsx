@@ -64,7 +64,7 @@ export default function Dashboard() {
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
           <div>
             <h1 style={{ fontSize: '2.5rem', fontWeight: 700, marginBottom: '0.5rem' }}>Policymaker Dashboard</h1>
-            <p style={{ color: 'rgba(255,255,255,0.6)', fontSize: '1.125rem' }}>
+            <p style={{ color: 'var(--foreground-muted)', fontSize: '1.125rem' }}>
               Real-time analytics and AI-driven recommendations.
             </p>
           </div>
@@ -74,21 +74,21 @@ export default function Dashboard() {
           <button 
             onClick={() => setView('analytics')}
             className={`glass-button ${view === 'analytics' ? 'active' : ''}`}
-            style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', background: view === 'analytics' ? 'rgba(255,255,255,0.1)' : 'transparent' }}
+            style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', background: view === 'analytics' ? 'var(--glass-border)' : 'transparent' }}
           >
             <LuActivity size={18} /> Analytics
           </button>
           <button 
             onClick={() => setView('map')}
             className={`glass-button ${view === 'map' ? 'active' : ''}`}
-            style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', background: view === 'map' ? 'rgba(255,255,255,0.1)' : 'transparent' }}
+            style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', background: view === 'map' ? 'var(--glass-border)' : 'transparent' }}
           >
             <LuMap size={18} /> Map View
           </button>
           <button 
             onClick={() => setView('list')}
             className={`glass-button ${view === 'list' ? 'active' : ''}`}
-            style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', background: view === 'list' ? 'rgba(255,255,255,0.1)' : 'transparent' }}
+            style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', background: view === 'list' ? 'var(--glass-border)' : 'transparent' }}
           >
             <LuList size={18} /> Admin List View
           </button>
@@ -99,7 +99,7 @@ export default function Dashboard() {
             {/* Stats Cards */}
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '1rem' }}>
               <div className="glass-panel" style={{ padding: '1.5rem', display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', color: 'rgba(255,255,255,0.6)' }}><LuLayoutDashboard /> Total Issues</div>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', color: 'var(--foreground-muted)' }}><LuLayoutDashboard /> Total Issues</div>
                 <div style={{ fontSize: '2.5rem', fontWeight: 700 }}>{total}</div>
               </div>
               <div className="glass-panel" style={{ padding: '1.5rem', display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
@@ -125,7 +125,7 @@ export default function Dashboard() {
                     <Pie data={pieData} cx="50%" cy="50%" innerRadius={60} outerRadius={100} paddingAngle={5} dataKey="value">
                       {pieData.map((entry, index) => <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />)}
                     </Pie>
-                    <RechartsTooltip contentStyle={{ background: 'rgba(15, 23, 42, 0.9)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '8px' }} />
+                    <RechartsTooltip contentStyle={{ background: 'rgba(15, 23, 42, 0.9)', border: '1px solid var(--glass-border)', borderRadius: '8px' }} />
                   </PieChart>
                 </ResponsiveContainer>
               </div>
@@ -133,9 +133,9 @@ export default function Dashboard() {
                 <h3 style={{ marginBottom: '1rem', fontWeight: 600 }}>Issue Volume</h3>
                 <ResponsiveContainer width="100%" height="100%">
                   <BarChart data={pieData}>
-                    <XAxis dataKey="name" stroke="rgba(255,255,255,0.5)" />
-                    <YAxis stroke="rgba(255,255,255,0.5)" />
-                    <RechartsTooltip cursor={{fill: 'rgba(255,255,255,0.05)'}} contentStyle={{ background: 'rgba(15, 23, 42, 0.9)', border: 'none', borderRadius: '8px' }} />
+                    <XAxis dataKey="name" stroke="var(--foreground-muted)" />
+                    <YAxis stroke="var(--foreground-muted)" />
+                    <RechartsTooltip cursor={{fill: 'var(--glass-border)'}} contentStyle={{ background: 'rgba(15, 23, 42, 0.9)', border: 'none', borderRadius: '8px' }} />
                     <Bar dataKey="value" fill="var(--primary)" radius={[4, 4, 0, 0]} />
                   </BarChart>
                 </ResponsiveContainer>
@@ -156,16 +156,16 @@ export default function Dashboard() {
               <div key={item.id} className="glass-panel" style={{ padding: '1.5rem' }}>
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
                   <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
-                    <span style={{ background: 'rgba(255,255,255,0.1)', padding: '0.25rem 0.75rem', borderRadius: '999px', fontSize: '0.75rem', fontWeight: 600, width: 'fit-content' }}>
+                    <span style={{ background: 'var(--glass-border)', padding: '0.25rem 0.75rem', borderRadius: '999px', fontSize: '0.75rem', fontWeight: 600, width: 'fit-content' }}>
                       {item.category}
                     </span>
-                    <span style={{ fontSize: '0.875rem', color: 'rgba(255,255,255,0.5)' }}>ID: {item.id}</span>
+                    <span style={{ fontSize: '0.875rem', color: 'var(--foreground-muted)' }}>ID: {item.id}</span>
                   </div>
                   <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: '0.5rem' }}>
                     <select 
                       value={item.status} 
                       onChange={(e) => updateIssue(item.id, 'update_status', { status: e.target.value })}
-                      style={{ background: 'rgba(15, 23, 42, 0.8)', color: 'white', border: '1px solid var(--glass-border)', padding: '0.25rem 0.5rem', borderRadius: '4px', fontSize: '0.875rem' }}
+                      style={{ background: 'var(--glass)', color: 'var(--foreground)', border: '1px solid var(--glass-border)', padding: '0.25rem 0.5rem', borderRadius: '4px', fontSize: '0.875rem' }}
                     >
                       <option value="Open">Open</option>
                       <option value="Assigned">Assigned</option>
@@ -179,14 +179,14 @@ export default function Dashboard() {
 
                 <p style={{ marginTop: '1rem' }}>{item.text}</p>
                 
-                <div style={{ marginTop: '1rem', padding: '1rem', background: 'rgba(0,0,0,0.2)', borderRadius: '8px' }}>
-                  <h4 style={{ fontSize: '0.875rem', color: 'rgba(255,255,255,0.5)', marginBottom: '0.5rem' }}>Admin Controls</h4>
+                <div style={{ marginTop: '1rem', padding: '1rem', background: 'var(--glass-border)', borderRadius: '8px' }}>
+                  <h4 style={{ fontSize: '0.875rem', color: 'var(--foreground-muted)', marginBottom: '0.5rem' }}>Admin Controls</h4>
                   <div style={{ display: 'flex', gap: '1rem', alignItems: 'center' }}>
                     <label style={{ fontSize: '0.875rem' }}>Assign Team:</label>
                     <select 
                       value={item.assignedTeam || ''} 
                       onChange={(e) => updateIssue(item.id, 'assign_team', { team: e.target.value })}
-                      style={{ background: 'rgba(15, 23, 42, 0.8)', color: 'white', border: '1px solid var(--glass-border)', padding: '0.25rem 0.5rem', borderRadius: '4px', fontSize: '0.875rem' }}
+                      style={{ background: 'var(--glass)', color: 'var(--foreground)', border: '1px solid var(--glass-border)', padding: '0.25rem 0.5rem', borderRadius: '4px', fontSize: '0.875rem' }}
                     >
                       <option value="">Unassigned</option>
                       <option value="team-sanitation">Sanitation Team</option>

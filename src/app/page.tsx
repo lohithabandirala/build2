@@ -17,7 +17,7 @@ export default function Home() {
             Speak up for your <br />
             <span className="gradient-text">community's future.</span>
           </h1>
-          <p style={{ fontSize: '1.25rem', color: 'rgba(255,255,255,0.7)', lineHeight: 1.6, maxWidth: '600px' }}>
+          <p style={{ fontSize: '1.25rem', color: 'var(--foreground-muted)', lineHeight: 1.6, maxWidth: '600px' }}>
             A Digital Public Good that transforms your voice, text, and photos into actionable infrastructure projects for national policymakers.
           </p>
           
@@ -38,7 +38,7 @@ export default function Home() {
               <LuMic size={24} />
             </div>
             <h3 style={{ fontSize: '1.25rem', fontWeight: 600 }}>Multilingual Voice First</h3>
-            <p style={{ color: 'rgba(255,255,255,0.6)', lineHeight: 1.5 }}>
+            <p style={{ color: 'var(--foreground-muted)', lineHeight: 1.5 }}>
               Report issues in Hindi, English or regional languages. Our AI automatically transcribes and understands your local dialect.
             </p>
           </div>
@@ -48,7 +48,7 @@ export default function Home() {
               <LuShieldCheck size={24} />
             </div>
             <h3 style={{ fontSize: '1.25rem', fontWeight: 600 }}>AI Validation</h3>
-            <p style={{ color: 'rgba(255,255,255,0.6)', lineHeight: 1.5 }}>
+            <p style={{ color: 'var(--foreground-muted)', lineHeight: 1.5 }}>
               Upload photos of infrastructure damage. Our Gemini Vision models instantly verify authenticity and categorize the problem.
             </p>
           </div>
@@ -58,7 +58,7 @@ export default function Home() {
               <LuChartBar size={24} />
             </div>
             <h3 style={{ fontSize: '1.25rem', fontWeight: 600 }}>Data-Driven Policy</h3>
-            <p style={{ color: 'rgba(255,255,255,0.6)', lineHeight: 1.5 }}>
+            <p style={{ color: 'var(--foreground-muted)', lineHeight: 1.5 }}>
               Aggregating grassroots feedback with national datasets to surface real-time hotspots and recommend strategic investments.
             </p>
           </div>
