@@ -102,60 +102,79 @@ export default function CommunityFeed() {
           ) : (
             feed.map((issue) => (
               <div key={issue.id} className="glass-panel" style={{ padding: '1.5rem', display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+                {/* Header Row: User Info & Badge */}
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
-                  <div>
-                    <span style={{ 
-                      background: 'var(--glass-border)', padding: '0.25rem 0.75rem', 
-                      borderRadius: '999px', fontSize: '0.75rem', fontWeight: 600,
-                      color: issue.ai_analysis?.urgency_score > 7 ? 'var(--accent)' : 'var(--primary)'
-                    }}>
-                      {issue.ai_analysis?.category || issue.category}
-                    </span>
-                    <h3 style={{ fontSize: '1.25rem', fontWeight: 600, marginTop: '0.75rem', lineHeight: 1.4 }}>
-                      {issue.ai_analysis?.summary || issue.text}
-                    </h3>
+                  <div style={{ display: 'flex', gap: '1rem', alignItems: 'center' }}>
+                    <div style={{ width: '40px', height: '40px', borderRadius: '50%', background: 'linear-gradient(135deg, var(--primary), var(--secondary))', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#fff', fontWeight: 700, fontSize: '1.2rem' }}>
+                      {issue.username ? issue.username.charAt(0).toUpperCase() : 'C'}
+                    </div>
+                    <div>
+                      <div style={{ fontWeight: 600, color: 'var(--foreground)' }}>{issue.username || 'Anonymous Citizen'}</div>
+                      <div style={{ fontSize: '0.8rem', color: 'var(--foreground-muted)' }}>{new Date(issue.createdAt).toLocaleString()}</div>
+                    </div>
                   </div>
-                  
-                  {/* Upvote Button */}
-                  <button 
-                    onClick={() => handleUpvote(issue.id)}
-                    className="glass-button hover-scale" 
-                    style={{ 
-                      display: 'flex', flexDirection: 'column', alignItems: 'center', padding: '0.5rem 1rem', 
-                      background: issue.votedBy?.includes(userId) ? 'rgba(59, 130, 246, 0.2)' : 'var(--glass-border)',
-                      color: issue.votedBy?.includes(userId) ? 'var(--primary)' : '#fff',
-                      border: issue.votedBy?.includes(userId) ? '1px solid var(--primary)' : '1px solid var(--glass-border)'
-                    }}
-                  >
-                    <LuThumbsUp size={20} style={{ marginBottom: '0.25rem' }} />
-                    <span style={{ fontWeight: 700 }}>{issue.upvotes || 0}</span>
-                  </button>
+                  <span style={{ 
+                    background: issue.ai_analysis?.urgency_score > 7 ? 'rgba(244, 63, 94, 0.1)' : 'rgba(79, 70, 229, 0.1)', 
+                    color: issue.ai_analysis?.urgency_score > 7 ? 'var(--accent)' : 'var(--primary)',
+                    padding: '0.25rem 0.75rem', 
+                    borderRadius: '999px', fontSize: '0.75rem', fontWeight: 600,
+                  }}>
+                    {issue.ai_analysis?.category || issue.category}
+                  </span>
                 </div>
 
-                <p style={{ color: 'var(--foreground-muted)', fontSize: '0.9rem', lineHeight: 1.5 }}>
-                  "{issue.text}"
-                </p>
+                {/* Content */}
+                <div style={{ marginTop: '0.5rem' }}>
+                  <h3 style={{ fontSize: '1.15rem', fontWeight: 600, lineHeight: 1.4, color: 'var(--foreground)' }}>
+                    {issue.ai_analysis?.summary || issue.text}
+                  </h3>
+                  <p style={{ color: 'var(--foreground-muted)', fontSize: '0.95rem', lineHeight: 1.5, marginTop: '0.5rem' }}>
+                    "{issue.text}"
+                  </p>
+                </div>
 
                 {issue.imageUrl && (
-                  <img src={issue.imageUrl} alt="Issue" style={{ width: '100%', maxHeight: '300px', objectFit: 'cover', borderRadius: '8px', border: '1px solid var(--glass-border)' }} />
+                  <img src={issue.imageUrl} alt="Issue" style={{ width: '100%', maxHeight: '400px', objectFit: 'cover', borderRadius: '12px', border: '1px solid var(--glass-border)' }} />
                 )}
 
-                <div style={{ display: 'flex', gap: '1.5rem', marginTop: '0.5rem', fontSize: '0.875rem', color: 'var(--foreground-muted)' }}>
+                <div style={{ display: 'flex', gap: '1.5rem', fontSize: '0.875rem', color: 'var(--foreground-muted)', marginTop: '0.5rem' }}>
                   <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                    <LuMapPin /> 
+                    <LuMapPin size={16} /> 
                     {issue.locationName ? issue.locationName : issue.location ? `${issue.location.lat.toFixed(4)}, ${issue.location.lng.toFixed(4)}` : 'Location unknown'}
                   </div>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                    <LuClock /> 
-                    {new Date(issue.createdAt).toLocaleString()}
-                  </div>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', color: 'var(--secondary)' }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', color: issue.status === 'Resolved' || issue.status === 'Closed' ? 'var(--secondary)' : 'var(--foreground-muted)' }}>
+                    <LuCircleCheck size={16} /> 
                     Status: {issue.status}
                   </div>
                 </div>
 
+                {/* Action Bar */}
+                <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', borderTop: '1px solid var(--glass-border)', paddingTop: '1rem', marginTop: '0.5rem' }}>
+                  <button 
+                    onClick={() => handleUpvote(issue.id)}
+                    style={{ 
+                      display: 'flex', alignItems: 'center', gap: '0.5rem', padding: '0.5rem 1rem', borderRadius: '99px',
+                      background: issue.votedBy?.includes(userId) ? 'rgba(79, 70, 229, 0.1)' : 'transparent',
+                      color: issue.votedBy?.includes(userId) ? 'var(--primary)' : 'var(--foreground-muted)',
+                      border: 'none', transition: 'background 0.2s', fontWeight: 600, cursor: 'pointer'
+                    }}
+                  >
+                    <LuThumbsUp size={18} />
+                    {issue.upvotes || 0}
+                  </button>
+
+                  {verifyId !== issue.id && issue.status !== 'Closed' && issue.status !== 'Resolved' && (
+                    <button 
+                      onClick={() => setVerifyId(issue.id)}
+                      style={{ background: 'transparent', border: 'none', color: 'var(--foreground-muted)', padding: '0.5rem 1rem', borderRadius: '99px', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '0.5rem', fontWeight: 500 }}
+                    >
+                      <LuMessageSquare size={18} /> Verify
+                    </button>
+                  )}
+                </div>
+
                 {issue.isFake === 1 && (
-                  <div style={{ padding: '0.75rem', background: 'rgba(239, 68, 68, 0.1)', border: '1px solid rgba(239, 68, 68, 0.3)', borderRadius: '8px', color: '#fca5a5', fontSize: '0.875rem' }}>
+                  <div style={{ padding: '0.75rem', background: 'rgba(244, 63, 94, 0.1)', border: '1px solid rgba(244, 63, 94, 0.3)', borderRadius: '8px', color: 'var(--accent)', fontSize: '0.875rem', marginTop: '0.5rem' }}>
                     <strong>⚠️ Flagged by AI:</strong> {issue.fakeReason}
                   </div>
                 )}

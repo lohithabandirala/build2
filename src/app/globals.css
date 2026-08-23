@@ -1,14 +1,14 @@
 :root {
-  --background: #f8fafc;
-  --foreground: #0f172a;
-  --foreground-muted: #64748b;
-  --primary: #2563eb;
-  --primary-glow: rgba(37, 99, 235, 0.2);
-  --secondary: #059669;
-  --secondary-glow: rgba(5, 150, 105, 0.2);
-  --accent: #e11d48;
+  --background: #F9FAFB;
+  --foreground: #111827;
+  --foreground-muted: #6B7280;
+  --primary: #4F46E5;
+  --primary-glow: rgba(79, 70, 229, 0.2);
+  --secondary: #10B981;
+  --secondary-glow: rgba(16, 185, 129, 0.2);
+  --accent: #F43F5E;
   --glass: #ffffff;
-  --glass-border: #e2e8f0;
+  --glass-border: #E5E7EB;
   --panel-bg: #ffffff;
 }
 
