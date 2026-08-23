@@ -89,32 +89,42 @@ export async function PUT(request: Request) {
     // Use the client-provided persistent anonymous ID, fallback to random if missing
     const mockUserId = userId || "citizen_" + Math.random().toString(36).substring(2, 6);
 
+    // Fetch the actual user from DB to get their username
+    let user = await User.findOne({ id: mockUserId });
+    if (!user) {
+      // Create them if they don't exist yet so they have a username
+      user = await User.create({
+        id: mockUserId,
+        username: 'Citizen ' + mockUserId.substring(mockUserId.length - 4),
+        role: 'citizen',
+        reputationPoints: 0,
+        badges: ['Citizen']
+      });
+    }
+
     if (action === 'upvote') {
       if (!issue.votedBy) issue.votedBy = [];
       if (issue.votedBy.includes(mockUserId)) {
-        // Remove vote
         issue.upvotes -= 1;
         issue.votedBy = issue.votedBy.filter((id: string) => id !== mockUserId);
         await issue.save();
-        // Option to remove points here, but for a prototype we can leave it to avoid complexity
       } else {
-        // Add vote
         issue.upvotes += 1;
         issue.votedBy.push(mockUserId);
         await issue.save();
-        await awardPoints(mockUserId, 5); // 5 points for upvoting
+        await awardPoints(mockUserId, 5); 
       }
     } else if (action === 'community_vote') {
       if (!issue.communityVotes) issue.communityVotes = [];
       issue.communityVotes.push({
         userId: mockUserId,
-        username: "Verified Citizen",
-        vote: voteType, // 'Verified' or 'Fake'
+        username: user.username,
+        vote: voteType,
         comment: comment || '',
         timestamp: new Date().toISOString()
       });
       await issue.save();
-      await awardPoints(mockUserId, 20); // 20 points for verifying
+      await awardPoints(mockUserId, 20); 
     } else if (action === 'update_status') {
       issue.status = status;
       if (status === 'Resolved') {
@@ -133,13 +143,13 @@ export async function PUT(request: Request) {
       if (!issue.communityVotes) issue.communityVotes = [];
       issue.communityVotes.push({
         userId: mockUserId,
-        username: "Original Reporter",
+        username: user.username + " (Original Reporter)",
         vote: isResolved ? 'Confirmed Resolved' : 'Not Resolved',
         comment: feedback || '',
         timestamp: new Date().toISOString()
       });
       await issue.save();
-      await awardPoints(mockUserId, 30); // 30 points for confirming resolution
+      await awardPoints(mockUserId, 30); 
     }
 
     return NextResponse.json({ success: true, data: issue });
