@@ -33,15 +33,27 @@ export default function CommunityFeed() {
   }, []);
 
   const handleUpvote = async (id: string) => {
-    // Prevent clicking if they already voted in the local state
     const issue = feed.find(i => i.id === id);
-    if (issue && issue.votedBy && issue.votedBy.includes(userId)) return;
+    const hasVoted = issue && issue.votedBy && issue.votedBy.includes(userId);
 
-    setFeed(prev => prev.map(item => item.id === id ? { 
-      ...item, 
-      upvotes: item.upvotes + 1, 
-      votedBy: [...(item.votedBy || []), userId] 
-    } : item));
+    setFeed(prev => prev.map(item => {
+      if (item.id === id) {
+        if (hasVoted) {
+          return {
+            ...item,
+            upvotes: item.upvotes - 1,
+            votedBy: item.votedBy.filter((vid: string) => vid !== userId)
+          };
+        } else {
+          return {
+            ...item,
+            upvotes: item.upvotes + 1,
+            votedBy: [...(item.votedBy || []), userId]
+          };
+        }
+      }
+      return item;
+    }));
     
     await fetch('/api/feedback', {
       method: 'PUT',
@@ -108,7 +120,12 @@ export default function CommunityFeed() {
                   <button 
                     onClick={() => handleUpvote(issue.id)}
                     className="glass-button hover-scale" 
-                    style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', padding: '0.5rem 1rem', background: 'rgba(255,255,255,0.05)' }}
+                    style={{ 
+                      display: 'flex', flexDirection: 'column', alignItems: 'center', padding: '0.5rem 1rem', 
+                      background: issue.votedBy?.includes(userId) ? 'rgba(59, 130, 246, 0.2)' : 'rgba(255,255,255,0.05)',
+                      color: issue.votedBy?.includes(userId) ? 'var(--primary)' : '#fff',
+                      border: issue.votedBy?.includes(userId) ? '1px solid var(--primary)' : '1px solid var(--glass-border)'
+                    }}
                   >
                     <LuThumbsUp size={20} style={{ marginBottom: '0.25rem' }} />
                     <span style={{ fontWeight: 700 }}>{issue.upvotes || 0}</span>

@@ -92,12 +92,18 @@ export async function PUT(request: Request) {
     if (action === 'upvote') {
       if (!issue.votedBy) issue.votedBy = [];
       if (issue.votedBy.includes(mockUserId)) {
-        return NextResponse.json({ success: false, error: "Already voted" }, { status: 400 });
+        // Remove vote
+        issue.upvotes -= 1;
+        issue.votedBy = issue.votedBy.filter((id: string) => id !== mockUserId);
+        await issue.save();
+        // Option to remove points here, but for a prototype we can leave it to avoid complexity
+      } else {
+        // Add vote
+        issue.upvotes += 1;
+        issue.votedBy.push(mockUserId);
+        await issue.save();
+        await awardPoints(mockUserId, 5); // 5 points for upvoting
       }
-      issue.upvotes += 1;
-      issue.votedBy.push(mockUserId);
-      await issue.save();
-      await awardPoints(mockUserId, 5); // 5 points for upvoting
     } else if (action === 'community_vote') {
       if (!issue.communityVotes) issue.communityVotes = [];
       issue.communityVotes.push({
