@@ -1,0 +1,61 @@
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Plus Jakarta Sans", ui-sans-serif, system-ui, sans-serif;
+  --font-display: "Outfit", sans-serif;
+  
+  --color-civic-primary: #059669; /* Emerald 600 */
+  --color-civic-primary-hover: #047857; /* Emerald 700 */
+  --color-civic-secondary: #0ea5e9;
+  --color-civic-accent: #10b981; /* Emerald 500 */
+  --color-civic-danger: #e11d48; /* Rose 600 */
+  --color-civic-success: #059669; /* Emerald 600 */
+  
+  /* Additional premium colors */
+  --color-surface-light: rgba(255, 255, 255, 0.85);
+  --color-surface-dark: rgba(15, 23, 42, 0.9);
+}
+
+@layer base {
+  body {
+    @apply bg-slate-50 text-slate-800 font-sans antialiased selection:bg-civic-primary/20 selection:text-civic-primary;
+    /* Premium subtle animated mesh gradient background */
+    background-color: #f8fafc;
+    background-image: 
+      radial-gradient(at 100% 0%, rgba(16, 185, 129, 0.12) 0px, transparent 50%),
+      radial-gradient(at 0% 100%, rgba(14, 165, 233, 0.12) 0px, transparent 50%),
+      radial-gradient(at 100% 100%, rgba(5, 150, 105, 0.08) 0px, transparent 50%);
+    background-attachment: fixed;
+  }
+}
+
+@layer components {
+  .glass-panel {
+    @apply bg-white/80 backdrop-blur-2xl border border-white shadow-[0_8px_30px_rgb(0,0,0,0.04)] rounded-3xl transition-all duration-300;
+  }
+  
+  .glass-panel:hover {
+    @apply shadow-[0_20px_40px_rgb(0,0,0,0.08)] border-white/80 transform translate-y-[-2px];
+  }
+  
+  .modern-input {
+    @apply w-full px-5 py-4 rounded-2xl border border-slate-200 bg-white/60 backdrop-blur-md outline-none focus:ring-4 focus:ring-civic-primary/15 focus:border-civic-primary focus:bg-white transition-all duration-300 text-sm font-semibold text-slate-800 placeholder:text-slate-400 shadow-sm hover:border-slate-300;
+  }
+  
+  .btn-primary {
+    @apply px-6 py-4 rounded-2xl bg-gradient-to-r from-civic-primary to-civic-accent text-white font-bold tracking-wide shadow-lg shadow-civic-primary/25 hover:shadow-xl hover:shadow-civic-primary/40 hover:-translate-y-1 transition-all duration-300 active:scale-95 disabled:opacity-50 disabled:pointer-events-none border border-white/10;
+  }
+  
+  .btn-secondary {
+    @apply px-6 py-4 rounded-2xl bg-white border border-slate-200 text-slate-700 font-bold tracking-wide shadow-sm hover:shadow-md hover:bg-slate-50 hover:border-slate-300 hover:-translate-y-0.5 transition-all duration-300 active:scale-95 disabled:opacity-50 disabled:pointer-events-none;
+  }
+}
+
+.leaflet-container {
+  width: 100%;
+  height: 100%;
+  border-radius: 1.5rem;
+  z-index: 10;
+}
+
