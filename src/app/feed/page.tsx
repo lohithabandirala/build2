@@ -2,15 +2,24 @@
 
 import Navigation from '@/components/Navigation';
 import { useEffect, useState } from 'react';
-import { LuThumbsUp, LuMapPin, LuClock, LuCheckCircle2, LuMessageSquare, LuSend } from 'react-icons/lu';
+import { LuThumbsUp, LuMapPin, LuClock, LuCircleCheck, LuMessageSquare, LuSend } from 'react-icons/lu';
 
 export default function CommunityFeed() {
   const [feed, setFeed] = useState<any[]>([]);
   const [verifyId, setVerifyId] = useState<string | null>(null);
   const [comment, setComment] = useState('');
   const [voteType, setVoteType] = useState('Verified');
+  const [userId, setUserId] = useState('');
 
   useEffect(() => {
+    // Generate or retrieve persistent anonymous user ID
+    let storedId = localStorage.getItem('awaaz_citizen_id');
+    if (!storedId) {
+      storedId = "citizen_" + Math.random().toString(36).substring(2, 9);
+      localStorage.setItem('awaaz_citizen_id', storedId);
+    }
+    setUserId(storedId);
+
     const fetchFeed = async () => {
       const res = await fetch('/api/feedback');
       const data = await res.json();
@@ -24,11 +33,20 @@ export default function CommunityFeed() {
   }, []);
 
   const handleUpvote = async (id: string) => {
-    setFeed(prev => prev.map(item => item.id === id ? { ...item, upvotes: item.upvotes + 1 } : item));
+    // Prevent clicking if they already voted in the local state
+    const issue = feed.find(i => i.id === id);
+    if (issue && issue.votedBy && issue.votedBy.includes(userId)) return;
+
+    setFeed(prev => prev.map(item => item.id === id ? { 
+      ...item, 
+      upvotes: item.upvotes + 1, 
+      votedBy: [...(item.votedBy || []), userId] 
+    } : item));
+    
     await fetch('/api/feedback', {
       method: 'PUT',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ id, action: 'upvote' })
+      body: JSON.stringify({ id, action: 'upvote', userId })
     });
   };
 
@@ -37,7 +55,7 @@ export default function CommunityFeed() {
     await fetch('/api/feedback', {
       method: 'PUT',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ id, action: 'community_vote', comment, voteType })
+      body: JSON.stringify({ id, action: 'community_vote', comment, voteType, userId })
     });
     setVerifyId(null);
     setComment('');
@@ -48,7 +66,7 @@ export default function CommunityFeed() {
     await fetch('/api/feedback', {
       method: 'PUT',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ id, action: 'confirm_resolution', isResolved: true, feedback: 'Looks good' })
+      body: JSON.stringify({ id, action: 'confirm_resolution', isResolved: true, feedback: 'Looks good', userId })
     });
   };
 

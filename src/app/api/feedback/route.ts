@@ -49,18 +49,18 @@ export async function POST(request: Request) {
 export async function PUT(request: Request) {
   try {
     await connectDB();
-    const { id, action, comment, voteType, status, team, notes, isResolved, feedback } = await request.json();
+    const { id, action, comment, voteType, status, team, notes, isResolved, feedback, userId } = await request.json();
     
     const issue = await Issue.findOne({ id });
     if (!issue) {
       return NextResponse.json({ success: false, error: "Not found" }, { status: 404 });
     }
 
-    // Since we don't have real auth, simulate a generic citizen ID
-    const mockUserId = "citizen_" + Math.random().toString(36).substring(2, 6);
+    // Use the client-provided persistent anonymous ID, fallback to random if missing
+    const mockUserId = userId || "citizen_" + Math.random().toString(36).substring(2, 6);
 
     if (action === 'upvote') {
-      // Toggle upvote logic
+      if (!issue.votedBy) issue.votedBy = [];
       if (issue.votedBy.includes(mockUserId)) {
         return NextResponse.json({ success: false, error: "Already voted" }, { status: 400 });
       }
@@ -68,7 +68,7 @@ export async function PUT(request: Request) {
       issue.votedBy.push(mockUserId);
       await issue.save();
     } else if (action === 'community_vote') {
-      // Decentralized verification
+      if (!issue.communityVotes) issue.communityVotes = [];
       issue.communityVotes.push({
         userId: mockUserId,
         username: "Verified Citizen",
@@ -92,7 +92,7 @@ export async function PUT(request: Request) {
       await issue.save();
     } else if (action === 'confirm_resolution') {
       issue.status = isResolved ? 'Closed' : 'In Progress';
-      
+      if (!issue.communityVotes) issue.communityVotes = [];
       issue.communityVotes.push({
         userId: mockUserId,
         username: "Original Reporter",

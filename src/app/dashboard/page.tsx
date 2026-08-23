@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react';
 import dynamic from 'next/dynamic';
 import Navigation from '@/components/Navigation';
-import { LuLayoutDashboard, LuMap, LuList, LuCheckCircle, LuClock, LuAlertTriangle, LuActivity, LuZap } from 'react-icons/lu';
+import { LuLayoutDashboard, LuMap, LuList, LuCircleCheck, LuClock, LuTriangleAlert, LuActivity, LuZap } from 'react-icons/lu';
 import { PieChart, Pie, Cell, Tooltip as RechartsTooltip, ResponsiveContainer, BarChart, Bar, XAxis, YAxis } from 'recharts';
 
 // Dynamically import the map to avoid SSR issues with Leaflet
@@ -107,11 +107,11 @@ export default function Dashboard() {
                 <div style={{ fontSize: '2.5rem', fontWeight: 700 }}>{pending}</div>
               </div>
               <div className="glass-panel" style={{ padding: '1.5rem', display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', color: '#10b981' }}><LuCheckCircle /> Resolved</div>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', color: '#10b981' }}><LuCircleCheck /> Resolved</div>
                 <div style={{ fontSize: '2.5rem', fontWeight: 700 }}>{resolved}</div>
               </div>
               <div className="glass-panel" style={{ padding: '1.5rem', display: 'flex', flexDirection: 'column', gap: '0.5rem', border: '1px solid rgba(239, 68, 68, 0.3)' }}>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', color: '#ef4444' }}><LuAlertTriangle /> Fake Reports</div>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', color: '#ef4444' }}><LuTriangleAlert /> Fake Reports</div>
                 <div style={{ fontSize: '2.5rem', fontWeight: 700 }}>{fake}</div>
               </div>
             </div>
