@@ -1,17 +1,29 @@
 "use client";
 
+import { useEffect, useState } from 'react';
 import Navigation from '@/components/Navigation';
-import { LuAward, LuMedal, LuTrophy } from 'react-icons/lu';
-
-const leaderboardData = [
-  { name: "Rahul S.", points: 1250, badge: "Civic Hero", level: 12 },
-  { name: "Priya M.", points: 940, badge: "Community Watcher", level: 9 },
-  { name: "Amit K.", points: 810, badge: "Active Citizen", level: 8 },
-  { name: "Sneha R.", points: 620, badge: "Reporter", level: 6 },
-  { name: "Vikram P.", points: 450, badge: "Reporter", level: 4 },
-];
+import { LuAward, LuMedal, LuTrophy, LuLoader } from 'react-icons/lu';
 
 export default function Leaderboard() {
+  const [leaderboardData, setLeaderboardData] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchLeaderboard = async () => {
+      try {
+        const res = await fetch('/api/leaderboard');
+        const data = await res.json();
+        if (data.success) {
+          setLeaderboardData(data.data);
+        }
+      } catch (err) {
+        console.error(err);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchLeaderboard();
+  }, []);
   return (
     <div className="container">
       <Navigation />
@@ -41,39 +53,50 @@ export default function Leaderboard() {
             <div style={{ textAlign: 'right' }}>Points</div>
           </div>
 
-          {leaderboardData.map((user, index) => (
-            <div key={index} style={{ 
-              display: 'grid', gridTemplateColumns: '50px 2fr 1fr 1fr', 
-              padding: '1rem', 
-              alignItems: 'center',
-              background: index === 0 ? 'rgba(245, 158, 11, 0.1)' : 'transparent',
-              borderRadius: '8px',
-              border: index === 0 ? '1px solid rgba(245, 158, 11, 0.3)' : '1px solid transparent'
-            }}>
-              <div style={{ display: 'flex', alignItems: 'center' }}>
-                {index === 0 ? <LuTrophy color="#fbbf24" size={24} /> : 
-                 index === 1 ? <LuMedal color="#94a3b8" size={24} /> : 
-                 index === 2 ? <LuMedal color="#b45309" size={24} /> : 
-                 <span style={{ fontSize: '1.25rem', fontWeight: 600, color: 'rgba(255,255,255,0.4)', paddingLeft: '8px' }}>{index + 1}</span>}
-              </div>
-              <div style={{ display: 'flex', flexDirection: 'column' }}>
-                <span style={{ fontWeight: 600, fontSize: '1.125rem' }}>{user.name}</span>
-                <span style={{ color: 'rgba(255,255,255,0.5)', fontSize: '0.875rem' }}>Level {user.level}</span>
-              </div>
-              <div>
-                <span style={{ 
-                  background: 'rgba(255,255,255,0.1)', padding: '0.25rem 0.75rem', 
-                  borderRadius: '999px', fontSize: '0.75rem', fontWeight: 500,
-                  color: index === 0 ? '#fbbf24' : 'var(--primary)'
-                }}>
-                  {user.badge}
-                </span>
-              </div>
-              <div style={{ textAlign: 'right', fontWeight: 700, fontSize: '1.25rem', color: index === 0 ? '#fbbf24' : '#fff' }}>
-                {user.points}
-              </div>
+          {loading ? (
+            <div style={{ padding: '2rem', textAlign: 'center', color: 'rgba(255,255,255,0.5)' }}>
+              <LuLoader className="spin" size={24} style={{ marginBottom: '1rem' }} />
+              <p>Loading ranking data...</p>
             </div>
-          ))}
+          ) : leaderboardData.length === 0 ? (
+            <div style={{ padding: '2rem', textAlign: 'center', color: 'rgba(255,255,255,0.5)' }}>
+              No citizens found on the leaderboard yet.
+            </div>
+          ) : (
+            leaderboardData.map((user, index) => (
+              <div key={user.id} style={{ 
+                display: 'grid', gridTemplateColumns: '50px 2fr 1fr 1fr', 
+                padding: '1rem', 
+                alignItems: 'center',
+                background: index === 0 ? 'rgba(245, 158, 11, 0.1)' : 'transparent',
+                borderRadius: '8px',
+                border: index === 0 ? '1px solid rgba(245, 158, 11, 0.3)' : '1px solid transparent'
+              }}>
+                <div style={{ display: 'flex', alignItems: 'center' }}>
+                  {index === 0 ? <LuTrophy color="#fbbf24" size={24} /> : 
+                   index === 1 ? <LuMedal color="#94a3b8" size={24} /> : 
+                   index === 2 ? <LuMedal color="#b45309" size={24} /> : 
+                   <span style={{ fontSize: '1.25rem', fontWeight: 600, color: 'rgba(255,255,255,0.4)', paddingLeft: '8px' }}>{index + 1}</span>}
+                </div>
+                <div style={{ display: 'flex', flexDirection: 'column' }}>
+                  <span style={{ fontWeight: 600, fontSize: '1.125rem' }}>{user.username}</span>
+                  <span style={{ color: 'rgba(255,255,255,0.5)', fontSize: '0.875rem' }}>Level {Math.floor(user.reputationPoints / 100) + 1}</span>
+                </div>
+                <div>
+                  <span style={{ 
+                    background: 'rgba(255,255,255,0.1)', padding: '0.25rem 0.75rem', 
+                    borderRadius: '999px', fontSize: '0.75rem', fontWeight: 500,
+                    color: index === 0 ? '#fbbf24' : 'var(--primary)'
+                  }}>
+                    {user.badges?.[0] || 'Citizen'}
+                  </span>
+                </div>
+                <div style={{ textAlign: 'right', fontWeight: 700, fontSize: '1.25rem', color: index === 0 ? '#fbbf24' : '#fff' }}>
+                  {user.reputationPoints}
+                </div>
+              </div>
+            ))
+          )}
 
         </div>
       </main>
