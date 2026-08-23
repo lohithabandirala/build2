@@ -30,17 +30,9 @@ export default function MapComponent({ feedbackData }: { feedbackData: any[] }) 
         />
         
         {feedbackData.length === 0 && (
-          <>
-            <CircleMarker center={[28.7041, 77.1025]} pathOptions={{ color: 'var(--accent)', fillColor: 'var(--accent)', fillOpacity: 0.6 }} radius={20}>
-              <Popup>Delhi NCR - High Urgency Infrastructure Gap</Popup>
-            </CircleMarker>
-            <CircleMarker center={[19.0760, 72.8777]} pathOptions={{ color: 'var(--primary)', fillColor: 'var(--primary)', fillOpacity: 0.6 }} radius={30}>
-              <Popup>Mumbai - Water Sanitation Requests</Popup>
-            </CircleMarker>
-            <CircleMarker center={[13.0827, 80.2707]} pathOptions={{ color: '#eab308', fillColor: '#eab308', fillOpacity: 0.6 }} radius={15}>
-              <Popup>Chennai - Road Repairs</Popup>
-            </CircleMarker>
-          </>
+          <div style={{ position: 'absolute', top: '10px', right: '10px', zIndex: 1000, background: 'rgba(0,0,0,0.8)', padding: '0.5rem 1rem', borderRadius: '4px', color: 'white' }}>
+            No infrastructure issues reported yet.
+          </div>
         )}
 
         {feedbackData.map((fb) => {
